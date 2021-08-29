@@ -4,10 +4,13 @@
      <h2 v-else>Player Move:{{ player }} </h2>
      <button @click="reset" class="btn btn-success mb-3">
         Reset</button>
-        <div v-for="x in 3" :key="x" class="row" @click="move(x, y)">
+        <div v-for="x in 3" :key="x" class="row">
+            <button v-for="y in 3" :key="y" class="square" @click="move(x, y)">
             {{ squares[x][y] }}
+            </button>
         </div>
  </div>
+
 </template>
 
 <script>
@@ -38,12 +41,13 @@ export default {
             ['', '', ''],
             ['', '', ''],
             ['', '', '']
-        ])
-        const winner = computed(() => calculateWinner(squares.value.flat()))
+        ]);
+        const winner = computed(() => calculateWinner(squares.value.flat()));
         const move = (x, y) => {
-            if (winner.value) return squares.value
-            player.value = player.value === 'O' ? 'X': 'O'
-        }
+            if (winner.value) return;
+             squares.value[x][y] = player.value;
+            player.value = player.value === 'O' ? 'X': 'O';
+        };
         const reset = () =>{
             player.value = 'X'
             squares.value = [
@@ -51,7 +55,8 @@ export default {
             ['', '', ''],
             ['', '', '']
             ]
-        }
+        };
+        return { winner, player, squares, move, reset};
     }
 }
 </script>
